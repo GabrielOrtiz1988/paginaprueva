@@ -1,0 +1,90 @@
+//alert(window.orientation);
+function bannerMin() {
+    jQuery("#bannerCampaign").removeClass("banner01").addClass("banner01-min");
+    jQuery("#downUpCampaign").find("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+    localStorage.banner_status = "min";
+
+    jQuery("#bannerCampaign").show();
+}
+
+function bannerMax() {
+    jQuery("#bannerCampaign").removeClass("banner01-min").addClass("banner01");
+    jQuery("#downUpCampaign").find("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+    localStorage.banner_status = "max";
+
+    jQuery("#bannerCampaign").show();
+
+}
+
+function bannerClose() {
+    jQuery("#bannerCampaign").remove();
+    localStorage.banner_status = "close"; 
+}
+
+
+jQuery(function(){
+    if (Drupal.settings.argentinagobar_campana_gubernamental && Drupal.settings.argentinagobar_campana_gubernamental.id_campaign)  {
+        if (!localStorage.id_campaign) {
+           localStorage.campaign_date = new Date().getDate();
+           localStorage.id_campaign = Drupal.settings.argentinagobar_campana_gubernamental.id_campaign;
+        } else {
+           if (localStorage.id_campaign != Drupal.settings.argentinagobar_campana_gubernamental.id_campaign || localStorage.campaign_date != new Date().getDate()) {
+               localStorage.banner_status = "max";
+               localStorage.id_campaign = Drupal.settings.argentinagobar_campana_gubernamental.id_campaign;
+           }
+        }
+
+        if (localStorage.banner_status) {
+             if(localStorage.banner_status == "min") {
+                  bannerMin();
+             } else if(localStorage.banner_status == "max") {
+                  bannerMax();
+             } else {
+                 bannerClose();
+             }
+        } else {
+            jQuery("#bannerCampaign").show();
+        }
+
+
+        jQuery("#closeCampaign").click(function(){
+
+    	    gtag_data = {
+                'event': 'ci_jgm_clic_cerrar',
+                'ci_jgm_category': 'Comunicación interna -JGM',
+                'ci_jgm_action': Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_action + 
+    				'_' + Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_fecha_difusion +
+                    '_' + Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_nodo,
+                'ci_jgm_label': Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_label
+            };
+
+    	    dataLayer.push(gtag_data);
+            localStorage.campaign_date = new Date().getDate();
+
+    	    jQuery(".navbar-brand")[0].focus();
+    	    bannerClose();
+        })
+
+        jQuery("#downUpCampaign").click(function(){
+
+            if (jQuery("#bannerCampaign").hasClass("banner01")) {
+                bannerMin();
+            } else {
+                bannerMax();
+            }
+        })
+
+        jQuery("#js-titulo").click(function(){
+    	    gtag_data = {
+		        'event': 'ci_jgm_clic_link',
+                'ci_jgm_category': 'Comunicación interna -JGM',
+                'ci_jgm_action': Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_action + 
+    				'_' + Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_fecha_difusion + 
+                    '_' + Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_nodo,
+                'ci_jgm_label': Drupal.settings.argentinagobar_campana_gubernamental.ci_jgm_label
+    	    };
+
+    	    dataLayer.push(gtag_data);
+        });
+    }
+})

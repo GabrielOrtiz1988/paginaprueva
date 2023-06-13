@@ -1,0 +1,41 @@
+
+var alto, ancho, destination;
+
+
+window.onload = function(){
+    var divFlecha = document.getElementById('scrolltotop_parent');
+    divFlecha.style.visibility = 'hidden';
+    divFlecha.onclick = irArriba;
+    alto = screen.height;
+    ancho = screen.width;
+    if(ancho <= 768){
+        destination = alto - 100;
+    }
+    divFlecha.style.top ="destination"+"px;";
+
+};
+
+
+window.addEventListener('scroll',function(){
+
+     if(ancho <= 768){
+        if(window.pageYOffset >= alto){
+                document.getElementById('scrolltotop_parent').style.visibility = 'visible';
+        }
+        else {
+                document.getElementById('scrolltotop_parent').style.visibility = 'hidden';
+        }
+    }
+ });
+
+
+const obtener_pixeles_inicio = () => document.documentElement.scrollTop || document.body.scrollTop;
+
+const irArriba = () => {
+
+        if(obtener_pixeles_inicio() > 0){
+                requestAnimationFrame(irArriba);
+                scrollTo(0, obtener_pixeles_inicio() - (obtener_pixeles_inicio() / 20));
+        }
+}
+

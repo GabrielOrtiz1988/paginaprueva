@@ -1,0 +1,35 @@
+ 
+  jQuery(document).ready(function($){
+ 								
+//Loads the html to each slider. Write in the "div id="slide-content-x" what you want to show in each slide
+//        $('#carousel-text').html($('#slide-content-0').html());
+        if ($('.carousel').length > 0){
+  	 $('.carousel').carousel({
+	  interval: false
+	})
+        //Handles the carousel thumbnails
+       $('[id^=carousel-selector-]').click( function(){
+            var values = this.id.split("-");
+            var idCarousel =  values[3];
+	    var idMiniatura = parseInt(values[2]);
+            $('#myCarousel' + idCarousel).carousel(idMiniatura);
+        });
+ 
+ 
+        // When the carousel slides, auto update the text
+       /* $('#myCarousel').on('slid.bs.carousel', function (e) {
+                 var id = $('.item.active').data('slide-number');
+                $('#carousel-text').html($('#slide-content-'+id).html());
+        }); */
+       // efecto swipe para mobile
+       $(".carousel").swipe({
+	swipe: function(event, direction, distance, duration, fingerCount, fingerData) {
+
+    	if (direction == 'left') $(this).carousel('next');
+    	if (direction == 'right') $(this).carousel('prev');
+
+  	},
+  	allowPageScroll:"vertical"
+	});
+}
+});

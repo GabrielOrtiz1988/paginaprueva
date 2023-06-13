@@ -1,0 +1,6 @@
+document.addEventListener("DOMContentLoaded", function(){
+       var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(userAgent) || ((/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream))) {
+       document.getElementById("linkWA").href = "whatsapp://send?text="+window.location.href;
+      }
+});
